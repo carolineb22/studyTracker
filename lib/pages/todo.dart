@@ -4,7 +4,9 @@ import 'package:final_project/models/todo_item.dart';
 import 'package:final_project/pages/detailPage.dart';
 
 class UserTodo extends StatefulWidget {
-  const UserTodo({Key? key}) : super(key: key);
+  final List<TodoItem> tasks;
+
+  const UserTodo({super.key, required this.tasks});
 
   @override
   _TodoState createState() => _TodoState();
@@ -14,10 +16,7 @@ class _TodoState extends State<UserTodo> {
   final _textController = TextEditingController();
   bool _isEditing = true;
 
-  final List<TodoItem> _assignments = [
-    TodoItem(title: 'item 1'),
-    TodoItem(title: 'item 2'),
-  ];
+  List<TodoItem> get _assignments => widget.tasks;
 
   void _addOrEditTodo({TodoItem? item, bool isNew = false}) {
     final tempItem = item ??
@@ -78,7 +77,6 @@ class _TodoState extends State<UserTodo> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title Editor Row
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -101,7 +99,6 @@ class _TodoState extends State<UserTodo> {
                       ),
                       counterText: "",
                       border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       suffixIcon: Container(
                         margin: const EdgeInsets.all(2),
@@ -157,7 +154,6 @@ class _TodoState extends State<UserTodo> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                // Add button
                 Container(
                   decoration: BoxDecoration(
                     color: const Color(0xFF73877B),
@@ -173,7 +169,7 @@ class _TodoState extends State<UserTodo> {
               ],
             ),
             const SizedBox(height: 20),
-            // Assignment List
+
             Expanded(
               child: ListView.builder(
                 itemCount: _assignments.length,
@@ -188,11 +184,6 @@ class _TodoState extends State<UserTodo> {
                       });
                     },
                     onTap: () => _addOrEditTodo(item: item),
-                    onDelete: () {
-                      setState(() {
-                        _assignments.removeAt(index);
-                      });
-                    },
                   );
                 },
               ),
